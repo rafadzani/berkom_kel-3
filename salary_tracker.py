@@ -9,8 +9,13 @@ def main() #program utama
 def ambil_data()
 
 def cek_waktu_saat_ini():
-  sekarang = datetime.now()
-  return sekarang
+  return datetime.now()
+
+def mulai_kerja():
+  sekarang = cek_waktu_saat_ini()
+  
+  tanggal = sekarang.strftime("%Y-%m-%d")
+  jam_masuk = sekarang.strftime("%H:%M:%S")
 
 def cek_id()
 
@@ -21,8 +26,6 @@ def edit_data()
 def hapus_data()
 
 def tambahkan_data()
-
-def mulai_kerja()
 
 def selesai_kerja()
 
