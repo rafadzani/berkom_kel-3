@@ -15,7 +15,14 @@ def mulai_kerja():
   sekarang = cek_waktu_saat_ini()
   
   tanggal = sekarang.strftime("%Y-%m-%d")
-  jam_masuk = sekarang.strftime("%H:%M:%S")
+  waktu_mulai = sekarang.strftime("%H:%M:%S
+  
+  with open("data_waktu.csv", "a", newline="") as file:
+    penulis = csv.writer(file)
+    penulis.writerow([username, jabatan, tanggal, waktu_mulai, "", ""])
+
+  print("Berhasil melakukan clock-in!")
+  print("Waktu mulai:", waktu_mulai)
 
 def cek_id()
 
