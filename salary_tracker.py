@@ -1,5 +1,5 @@
 import csv
-import time
+from datetime import datetime
 #Program Salary Tracker
 #Berfungsi untuk mencatat jam masuk dan pulang kerja, menghitung lama jam kerja, serta menghitung gaji berdasarkan jabatan dan lama jam kerja
 
