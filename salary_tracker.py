@@ -8,7 +8,9 @@ def main() #program utama
 #subprogram
 def ambil_data()
 
-def cek_waktu_saat_ini()
+def cek_waktu_saat_ini():
+  sekarang = datetime.now()
+  return sekarang
 
 def cek_id()
 
