@@ -15,7 +15,15 @@ def mulai_kerja():
   sekarang = cek_waktu_saat_ini()
   
   tanggal = sekarang.strftime("%Y-%m-%d")
-  waktu_mulai = sekarang.strftime("%H:%M:%S
+  waktu_mulai = sekarang.strftime("%H:%M:%S")
+
+  with open("data_waktu.csv", "r") as file:
+    pembaca = csv.DictReader(file)
+
+    for baris in pembaca:
+            if baris["username"] == username and baris["tanggal"] == tanggal:
+                print("Anda sudah melakukan presensi hari ini!")
+                return
   
   with open("data_waktu.csv", "a", newline="") as file:
     penulis = csv.writer(file)
