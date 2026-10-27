@@ -3,14 +3,16 @@ from datetime import datetime
 #Program Salary Tracker
 #Berfungsi untuk mencatat jam masuk dan pulang kerja, menghitung lama jam kerja, serta menghitung gaji berdasarkan jabatan dan lama jam kerja
 
-def main() #program utama
+def main(): #program utama
+  database = ambil_data("data.csv")
+  
 
 #subprogram
 def ambil_data(filename):
   database = []
   with open(filename) as file:
-    pembaca = csv.Dictreader(file)
-    database = [row for row in reader]
+    pembaca = csv.DictReader(file)
+    database = [row for row in pembaca]
   return[database]
 
 def cek_waktu_saat_ini():
@@ -56,6 +58,3 @@ def selesai_kerja():
 def hitung_gaji():
 
 def cek_gaji():
-
-ambil_data("data.csv")
-print(database)
