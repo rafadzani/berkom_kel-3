@@ -40,6 +40,43 @@ def mulai_kerja(username, nama):
    print("Waktu mulai:", waktu_mulai)
    return True
 
+def selesai_kerja(username):
+   sekarang = cek_waktu_saat_ini()
+
+   tanggal = sekarang.strftime("%Y-%m-%d")
+   waktu_selesai = sekarang.strftime("%H:%M:%S")
+
+   with open("data_waktu.csv", "r") as file:
+      pembaca = csv.DictReader(file)
+      data = list(pembaca)
+
+      for baris in data:
+         if baris["username"] == username and baris["tanggal"] == tanggal:
+            if baris["waktu_selesai"] != "":
+              print("Anda sudah melakukan presensi hari ini")
+              return False
+
+            waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
+            waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
+
+            jam_kerja = (waktu_akhir - waktu_mulai).total_seconds() / 3600
+
+            baris["waktu_selesai"] = waktu_selesai
+            baris["jam_kerja"] = jam_kerja
+
+            with open("data_waktu.csv", "w", newline="") as file:
+                  penulis = csv.DictWriter(file, fieldnames=["nama", "username", "tanggal", "waktu_mulai", "waktu_selesai", "jam_kerja"])
+                  penulis.writeheader()
+                  penulis.writerows(data)
+
+            print("Berhasil melakukan clock-out!")
+            print("Waktu selesai:", waktu_selesai)
+            print("Total jam kerja:", round(jam_kerja, 2), "jam")
+            return True
+
+   print("Anda belum melakukan clock-in hari ini!")
+   return False
+
 def cek_id(database):
   username = input("Masukkan username: ")
 
