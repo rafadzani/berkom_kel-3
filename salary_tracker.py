@@ -18,32 +18,49 @@ def ambil_data(filename):
 def cek_waktu_saat_ini():
   return datetime.now()
 
-def mulai_kerja():
-  sekarang = cek_waktu_saat_ini()
+def mulai_kerja(username, nama):
+   sekarang = cek_waktu_saat_ini
+
+   tanggal = sekarang.strftime("%Y-%m-%d")
+   waktu_mulai = sekarang.strftime("%H:%M:%S")
+
+   with open("data_waktu.csv", "r") as file:
+      pembaca = csv.DictReader(file)
+
+      for baris in pembaca:
+         if baris["username"] == username and baris["tanggal"] == tanggal:
+            print("Anda sudah melakukan presensi hari ini")
+            return False
+
+   with open("data_waktu.csv", "a", newline="") as file:
+      penulis = csv.writer(file)
+      penulis.writerow([nama, username, tanggal, waktu_mulai, "", ""])
+
+   print("Berhasil melakukan clock-in!")
+   print("Waktu mulai:", waktu_mulai)
+   return True
+
+def cek_id(database):
+  username = input("Masukkan username: ")
+
+  for i in range(len(database)):
+       if username == database[i][1]:
+          return i
+       
+  print("Username tidak terdaftar!")
+  return False
+
+def cek_password(database, indeks):
+  for kesempatan in range(3):
+       password = input("Masukkan password: ")
   
-  tanggal = sekarang.strftime("%Y-%m-%d")
-  waktu_mulai = sekarang.strftime("%H:%M:%S")
-
-  with open("data_waktu.csv", "r") as file:
-    pembaca = csv.DictReader(file)
-
-    for baris in pembaca:
-            if baris["username"] == username and baris["tanggal"] == tanggal:
-                print("Anda sudah melakukan presensi hari ini!")
-                return
+       if password == database[indeks][2]:
+          return True
   
-  with open("data_waktu.csv", "a", newline="") as file:
-    penulis = csv.writer(file)
-    penulis.writerow([username, jabatan, tanggal, waktu_mulai, "", ""])
+       print("Password salah!")
 
-  print("Berhasil melakukan clock-in!")
-  print("Waktu mulai:", waktu_mulai)
-
-def cek_id():
-  
-
-def cek_password():
-  
+  print("Anda sudah salah 3 kali!")
+  return False
 
 def edit_data():
   
