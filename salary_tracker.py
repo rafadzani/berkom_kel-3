@@ -6,7 +6,12 @@ from datetime import datetime
 def main() #program utama
 
 #subprogram
-def ambil_data()
+def ambil_data(filename):
+  database = []
+  with open(filename) as file:
+    pembaca = csv.Dictreader(file)
+    database = [row for row in reader]
+  return[database]
 
 def cek_waktu_saat_ini():
   return datetime.now()
@@ -32,18 +37,25 @@ def mulai_kerja():
   print("Berhasil melakukan clock-in!")
   print("Waktu mulai:", waktu_mulai)
 
-def cek_id()
+def cek_id():
+  
 
-def cek_password()
+def cek_password():
+  
 
-def edit_data()
+def edit_data():
+  
 
-def hapus_data()
+def hapus_data():
+  
 
-def tambahkan_data()
+def tambahkan_data():
 
-def selesai_kerja()
+def selesai_kerja():
 
-def hitung_gaji()
+def hitung_gaji():
 
-def cek_gaji()
+def cek_gaji():
+
+ambil_data("data.csv")
+print(database)
