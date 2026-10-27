@@ -5,15 +5,24 @@ from datetime import datetime
 
 def main(): #program utama
   database = ambil_data("data.csv")
+  while True:
+    lanjut_ke_pin = False #keadaan dasar
+    lanjut_ke_absen = False #keadaan dasar
+
+  while lanjut_ke_pin == False:
+    data_utama_user = cek_id(database)
+    if data_utama_user != False:
+      lanjut_ke_pin = data_utama_user[0]
+      indeks_user = data_utama_user[1]
+      nama_user = data_utama_user[2]
+      jabatan_user = data_utama_user[3]
   
 
 #subprogram
 def ambil_data(filename):
-  database = []
-  with open(filename) as file:
-    pembaca = csv.DictReader(file)
-    database = [row for row in pembaca]
-  return[database]
+  with open(filename, mode="r", encoding="utf-8-sig") as file:
+  pembaca = csv.DictReader(file)
+  return [row for row in pembaca]
 
 def cek_waktu_saat_ini():
   return datetime.now()
@@ -78,12 +87,13 @@ def selesai_kerja(username):
    return False
 
 def cek_id(database):
-  username = input("Masukkan username: ")
-
-  for i in range(len(database)):
-       if username == database[i][1]:
-          return i
-       
+  username = input("Masukkan user id anda: ")
+  for data in database:
+    if data["username"] == username:
+      nama_user = data["nama"]
+      indeks_user =data["nomor"]
+      jabatan_user = data["jabatan"]
+      return [True, indeks_user, nama_user, jabatan_user]
   print("Username tidak terdaftar!")
   return False
 
