@@ -1,22 +1,26 @@
-﻿nama,username,password,jabatan,gaji
-Robert Downey Jr.,19667001,dummy#01,General Manager,10000000
-Patrick,19667002,dummy#02,General Manager,9300000
-Daniel Caesar,19667003,dummy#03,Manager,7900000
-Sandra Bullock,19667004,dummy#04,Manager,8100000
-Zendaya,19667005,dummy#05,Manager,7960000
-Tom Holland,19667006,dummy#06,Manager,7800000
-Anton,19667007,dummy#07,Supervisor,6760000
-Reza Auditore,19667008,dummy#08,Supervisor,6810000
-Rusdi,19667009,dummy#09,Supervisor,6800000
-Fuad,19667048,dummy#10,Supervisor,6690000
-Mr. Ironi,19667067,dummy#11,Supervisor,6730000
-Spongebob,19667069,dummy#12,Staff,6000000
-Paris Geller,19667001,dummy#13,Staff,5500000
-Cristiano Rolando,19667077,dummy#77,Staff,5800000
-Lionel Messi,19667010,goat#01,Staff,5650000
-Erling Haaland,19667009,dummy#99,Staff,5760000
-Valentino Rossi,19267046,dummy#46,Staff,5530000
-Elon Musk,19667011,dummy#14,Staff,5790000
-Jimmy Neutron,19667012,dummy#15,Magang,2000000
-Donald Trump,19667000,dummy#00,Magang,2000000
-Admin,admin,admin#123,Admin,0
+nomor,nama,username,password,jabatan,gaji
+1,Robert Downey Jr.,19667001,dummy#01,General Manager,10000000
+2,Patrick,19667002,dummy#02,General Manager,9300000
+3,Daniel Caesar,19667003,dummy#03,Manager,7900000
+4,Sandra Bullock,19667004,dummy#04,Manager,8100000
+5,Zendaya,19667005,dummy#05,Manager,7960000
+6,Tom Holland,19667006,dummy#06,Manager,7800000
+7,Anton,19667007,dummy#07,Supervisor,6760000
+8,Reza Auditore,19667008,dummy#08,Supervisor,6810000
+9,Rusdi,19667009,dummy#09,Supervisor,6800000
+10,Fuad,19667048,dummy#10,Supervisor,6690000
+11,Mr. Ironi,19667067,dummy#11,Supervisor,6730000
+12,Spongebob,19667069,dummy#12,Staff,6000000
+13,Paris Geller,19667001,dummy#13,Staff,5500000
+14,Cristiano Rolando,19667077,dummy#77,Staff,5800000
+15,Lionel Messi,19667010,goat#01,Staff,5650000
+16,Erling Haaland,19667009,dummy#99,Staff,5760000
+17,Valentino Rossi,19267046,dummy#46,Staff,5530000
+18,Elon Musk,19667011,dummy#14,Staff,5790000
+19,Jimmy Neutron,19667012,dummy#15,Magang,2000000
+20,Donald Trump,19667000,dummy#00,Magang,2000000
+21,Admin,admin,admin#123,Admin,0
+22,0,0,0,0,0
+23,0,0,0,0,0
+24,0,0,0,0,0
+24,0,0,0,0,0
