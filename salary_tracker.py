@@ -13,7 +13,7 @@ def main(): #program utama
     lanjut_ke_absen = False #keadaan dasar
 
     while lanjut_ke_pin == False:
-      data_utama_user = cek_id(database)
+      data_utama_user = cek_user(database)
       if data_utama_user != False:
          lanjut_ke_pin = data_utama_user[0]
          indeks_user = data_utama_user[1]
@@ -122,8 +122,8 @@ def selesai_kerja(database_waktu, username):
    print("Anda belum melakukan clock-in hari ini!")
    return False
 
-def cek_id(database):
-  username = input("Masukkan user id anda: ")
+def cek_user(database):
+  username = input("Masukkan username anda: ")
   for i in range(len(database)):
     if database[i]["username"] == username and username != "":
       nama_user = database[i]["nama"]
