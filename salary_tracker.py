@@ -53,6 +53,32 @@ def ambil_data(filename):
     return [row for row in pembaca]
 
 def tambah_data(database):
+   for i in range(len(database)):
+      if database[i]["nomor"] == "":
+         nomor = i + 1
+
+         nama =  input("Masukkan nama karyawan: ")
+         username = input("Masukkan username: ")
+
+         for data in database:
+            if data["username"] == username:
+               print("Username sudah terdaftar!")
+               return False
+
+         password = input("Masukkan password: ")
+         jabatan = input("Masukkan jabatan: ")
+         gaji = input("Masukkan gaji: ")
+
+         database[i] = {
+            "nomor": str(nomor),
+            "nama": nama,
+            "username": username,
+            "password": password,
+            "jabatan": jabatan,
+            "gaji": gaji
+         }
+
+         print("Karyawan berhasil ditambahkan!")
 
 def simpan_data(filename, database):
    with open(filename, "w", newline="") as file:
