@@ -45,6 +45,16 @@ def main(): #program utama
             break
          else:
             print("Masukkan kode menu yang benar (1/2)")
+           
+    lanjut_looping = input("Apa ada hal lain yang bisa dibantu?\n1. Ada\n2. Tidak Ada \nPilih menu: ")
+    while lanjut_looping != "1" and lanjut_looping != "2":
+       lanjut_looping = input("Masukkan kode yang benar!\nApa ada hal lain yang bisa dibantu?\n1. Ada\n2. Tidak Ada\nPilih menu: ")
+
+    if lanjut_looping == "1":
+       continue
+    elif lanjut_looping == "2":
+       print("Terima kasih telah menggunakan layanan ini :D")
+       break
 
 #subprogram
 def ambil_data(filename):
