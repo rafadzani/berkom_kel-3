@@ -52,6 +52,12 @@ def ambil_data(filename):
     pembaca = csv.DictReader(file)
     return [row for row in pembaca]
 
+def simpan_data(filename, database):
+   with open(filename, "w", newline="") as file:
+      penulis = csv.DictWriter(file, fieldnames=database[0].keys())
+      penulis.writeheader()
+      penulis.writerows(database)
+
 def tambah_data(database):
    for i in range(len(database)):
       if database[i]["nomor"] == "":
@@ -79,12 +85,6 @@ def tambah_data(database):
          }
 
          print("Karyawan berhasil ditambahkan!")
-
-def simpan_data(filename, database):
-   with open(filename, "w", newline="") as file:
-      penulis = csv.DictWriter(file, fieldnames=database[0].keys())
-      penulis.writeheader()
-      penulis.writerows(database)
 
 def edit_data(database):
    username = input("Masukkan username karyawan yang ingin diedit: ")
