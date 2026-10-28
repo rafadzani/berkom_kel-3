@@ -252,10 +252,6 @@ def cek_password(database, indeks):
 
 main()
 
-def edit_data():
-  
-def hapus_data():
-
 def hitung_gaji():
 
 def cek_gaji():
