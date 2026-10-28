@@ -125,6 +125,9 @@ def edit_data(database):
          else:
             print("Pilihan tidak valid!")
             return False
+
+         print("Data karyawan berhasil diperbarui!")
+         return True
    
    print("Username tidak ditemukan!")
    return False
