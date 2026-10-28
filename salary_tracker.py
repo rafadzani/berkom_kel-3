@@ -86,8 +86,48 @@ def simpan_data(filename, database):
       penulis.writeheader()
       penulis.writerows(database)
 
-def edit_data():
-  
+def edit_data(database):
+   username = input("Masukkan username karyawan yang ingin diedit: ")
+
+   for i in range(len(database)):
+      if database[i]["username"] == username and username != "":
+         print("Nama:", database[i]["nama"])
+         print("Username:", database[i]["username"])
+         print("Jabatan:", database[i]["jabatan"])
+         print("Gaji:", database[i]["gaji"])
+
+         print("\n1. Edit nama\n2. Edit username\n3. Edit password\n4. Edit jabatan\n5. Edit gaji")
+
+         pilihan = input("Pilih data yang ingin diedit: ")
+
+         if pilihan == "1":
+            database[i["nama"]] = input("Masukkan nama baru: ")
+
+         elif pilihan == "2":
+            username_baru = input("Masukkan username baru: ")
+
+            for j in range(len(database)):
+               if database[j]["username"] == username_baru:
+                  print("Username sudah terdaftar!")
+                  return False
+
+            database[i]["username"] = username_baru
+
+         elif pilihan == "3":
+            database[i]["password"] = input("Masukkan password baru: ")
+
+         elif pilihan == "4":
+            database[i]["jabatan"] = input("Masukkan jabatan baru: ")
+
+         elif pilihan == "5":
+            database[i]["gaji"] = input("Masukkan gaji baru: ")
+         
+         else:
+            print("Pilihan tidak valid!")
+            return False
+   
+   print("Username tidak ditemukan!")
+   return False
 
 def hapus_data(database):
    username = input("Masukkan username karyawan yang ingin dihapus: ")
