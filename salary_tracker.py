@@ -4,25 +4,43 @@ from datetime import datetime
 #Berfungsi untuk mencatat jam masuk dan pulang kerja, menghitung lama jam kerja, serta menghitung gaji berdasarkan jabatan dan lama jam kerja
 
 def main(): #program utama
+  print("==== Selamat Datang Di Program Presensi Karyawan PT Ngawi Sejahtera Makmur Sentosa ====")
+  print("======================================================================================")
   database = ambil_data("data.csv")
   while True:
     lanjut_ke_pin = False #keadaan dasar
     lanjut_ke_absen = False #keadaan dasar
 
-  while lanjut_ke_pin == False:
-    data_utama_user = cek_id(database)
-    if data_utama_user != False:
-      lanjut_ke_pin = data_utama_user[0]
-      indeks_user = data_utama_user[1]
-      nama_user = data_utama_user[2]
-      jabatan_user = data_utama_user[3]
-  
+    while lanjut_ke_pin == False:
+      data_utama_user = cek_id(database)
+      if data_utama_user != False:
+         lanjut_ke_pin = data_utama_user[0]
+         indeks_user = data_utama_user[1]
+         user_id = data_utama_user[2]
+         nama_user = data_utama_user[3]
+         jabatan_user = data_utama_user[4]
+
+    while lanjut_ke_absen == False:
+       lanjut_ke_absen = cek_password(database, indeks_user)
+
+    if lanjut_ke_absen == True:
+       print("Login berhasil!\n")
+
+    if nama_user == "Admin":
+       indeks_menu = int(input("Selamat datang di menu Admin, apa yang ingin anda lakukan?\n1. Edit data karyawan\n2. Hapus data karyawan\n3. Tambahkan karyawan baru\n4. Cek gaji\nPilih menu: "))
+
+    else:
+      indeks_menu = int(input(f"Selamat datang {nama_user}, apa yang ingin anda lakukan?\n1. Presensi mulai kerja\n2. Presensi selesai kerja\nPilih menu: "))
+
+    
+      
 
 #subprogram
 def ambil_data(filename):
   with open(filename, mode="r", encoding="utf-8-sig") as file:
-  pembaca = csv.DictReader(file)
-  return [row for row in pembaca]
+    pembaca = csv.DictReader(file)
+    return [row for row in pembaca]
+
 
 def cek_waktu_saat_ini():
   return datetime.now()
@@ -91,30 +109,27 @@ def cek_id(database):
   for data in database:
     if data["username"] == username:
       nama_user = data["nama"]
-      indeks_user =data["nomor"]
+      indeks_user = int(data["nomor"])
       jabatan_user = data["jabatan"]
-      return [True, indeks_user, nama_user, jabatan_user]
+      return [True, indeks_user, username, nama_user, jabatan_user]
   print("Username tidak terdaftar!")
   return False
 
 def cek_password(database, indeks):
   for kesempatan in range(3):
-       password = input("Masukkan password: ")
-  
-       if password == database[indeks][2]:
-          return True
-  
-       print("Password salah!")
-
-  print("Anda sudah salah 3 kali!")
+    password = input("Masukkan password: ")
+    if password == database[indeks-1]["password"]:
+      return True
+    print("Password salah!")
+  print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
   return False
+
+main()
 
 def edit_data():
   
-
 def hapus_data():
   
-
 def tambahkan_data():
 
 def selesai_kerja():
