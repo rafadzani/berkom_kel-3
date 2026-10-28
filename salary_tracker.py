@@ -7,6 +7,7 @@ def main(): #program utama
   print("==== Selamat Datang Di Program Presensi Karyawan PT Ngawi Sejahtera Makmur Sentosa ====")
   print("======================================================================================")
   database = ambil_data("data.csv")
+  database_waktu = ambil_data("data_waktu.csv")
   while True:
     lanjut_ke_pin = False #keadaan dasar
     lanjut_ke_absen = False #keadaan dasar
@@ -35,10 +36,12 @@ def main(): #program utama
       while True:
          indeks_menu = int(input("Pilih menu: "))
          if indeks_menu == 1:
-            mulai_kerja(username, nama, jabatan_user)
+            if mulai_kerja(database_waktu, username, nama, jabatan_user):
+               simpan_data("data_waktu.csv", database_waktu)
             break
          elif indeks_menu == 2:
-            selesai_kerja(username)
+            if selesai_kerja(database_waktu, username):
+               simpan_data("data_waktu.csv", database_waktu)
             break
          else:
             print("Masukkan kode menu yang benar (1/2)")
@@ -49,47 +52,55 @@ def ambil_data(filename):
     pembaca = csv.DictReader(file)
     return [row for row in pembaca]
 
+def tambah_data(database):
+
+def simpan_data(filename, database):
+   with open(filename, "w", newline="") as file:
+      penulis = csv.DictWriter(file, fieldnames=database[0].keys())
+      penulis.writeheader()
+      penulis.writerows(database)
 
 def cek_waktu_saat_ini():
   return datetime.now()
 
-def mulai_kerja(username, nama, jabatan):
+def mulai_kerja(database_waktu, username, nama, jabatan):
    sekarang = cek_waktu_saat_ini()
 
    tanggal = sekarang.strftime("%Y-%m-%d")
    waktu_mulai = sekarang.strftime("%H:%M:%S")
 
-   with open("data_waktu.csv", "r") as file:
-      pembaca = csv.DictReader(file)
+   for baris in database_waktu:
+      if baris["username"] == username and baris["tanggal"] == tanggal:
+         print("Anda sudah melakukan presensi hari ini")
+         return False
 
-      for baris in pembaca:
-         if baris["username"] == username and baris["tanggal"] == tanggal:
-            print("Anda sudah melakukan presensi hari ini")
-            return False
+   for i in range(len(database_waktu)):
+      if database_waktu[i]["username"] == "":
+         database_waktu[i] = {
+            "nama": nama,
+            "username": username,
+            "jabatan": jabatan,
+            "tanggal": tanggal,
+            "waktu_mulai": waktu_mulai,
+            "waktu_selesai": "",
+            "jam_kerja": ""
+         }
 
-   with open("data_waktu.csv", "a", newline="") as file:
-      penulis = csv.writer(file)
-      penulis.writerow([nama, username, jabatan, tanggal, waktu_mulai, "", ""])
+         print("Berhasil melakukan clock-in!")
+         print("Waktu mulai:", waktu_mulai)
+         return True
 
-   print("Berhasil melakukan clock-in!")
-   print("Waktu mulai:", waktu_mulai)
-   return True
+   print("Database presensi sudah penuh!")
+   return False
 
-def selesai_kerja(username):
+def selesai_kerja(database_waktu, username):
    sekarang = cek_waktu_saat_ini()
 
    tanggal = sekarang.strftime("%Y-%m-%d")
    waktu_selesai = sekarang.strftime("%H:%M:%S")
 
-   with open("data_waktu.csv", "r") as file:
-      pembaca = csv.DictReader(file)
-      data = list(pembaca)
-
-   ditemukan = False
-
-   for baris in data:
+   for baris in database_waktu:
       if baris["username"] == username and baris["tanggal"] == tanggal:
-         ditemukan = True
 
          if baris["waktu_selesai"] != "":
             print("Anda sudah melakukan presensi selesai kerja hari ini")
@@ -97,54 +108,44 @@ def selesai_kerja(username):
 
          waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
          waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
-   
+
          jam_kerja = (waktu_akhir - waktu_mulai).total_seconds() / 3600
-   
+
          baris["waktu_selesai"] = waktu_selesai
          baris["jam_kerja"] = round(jam_kerja, 2)
-         break
 
-   if ditemukan == False:
-      print("Anda belum melakukan clock-in hari ini!")
-      return False
-      
-   with open("data_waktu.csv", "w", newline="") as file:
-      penulis = csv.DictWriter(file, fieldnames=["nama", "username", "jabatan", "tanggal", "waktu_mulai", "waktu_selesai", "jam_kerja"])
-      penulis.writeheader()
-      penulis.writerows(data)
-   
-   print("Berhasil melakukan clock-out!")
-   print("Waktu selesai:", waktu_selesai)
-   print("Total jam kerja:", round(jam_kerja, 2), "jam")
-   return True
+         print("Berhasil melakukan clock-out!")
+         print("Waktu selesai:", waktu_selesai)
+         print("Total jam kerja:", round(jam_kerja, 2), "jam")
+         return True
+
+   print("Anda belum melakukan clock-in hari ini!")
+   return False
 
 def cek_id(database):
   username = input("Masukkan user id anda: ")
-  for data in database:
-    if data["username"] == username:
-      nama_user = data["nama"]
-      indeks_user = int(data["nomor"])
-      jabatan_user = data["jabatan"]
-      return [True, indeks_user, username, nama_user, jabatan_user]
+  for i in range(len(database)):
+    if database[i]["username"] == username and username != "":
+      nama_user = database[i]["nama"]
+      jabatan_user = database[i]["jabatan"]
+      return [True, i, username, nama_user, jabatan_user]
   print("Username tidak terdaftar!")
   return False
 
 def cek_password(database, indeks):
   for kesempatan in range(3):
     password = input("Masukkan password: ")
-    if password == database[indeks-1]["password"]:
+    if password == database[indeks]["password"]:
       return True
     print("Password salah!")
   print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
   return False
-   
+
 main()
 
 def edit_data():
   
 def hapus_data():
-  
-def tambahkan_data():
 
 def hitung_gaji():
 
