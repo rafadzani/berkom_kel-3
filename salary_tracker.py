@@ -85,32 +85,38 @@ def selesai_kerja(username):
       pembaca = csv.DictReader(file)
       data = list(pembaca)
 
-      for baris in data:
-         if baris["username"] == username and baris["tanggal"] == tanggal:
-            if baris["waktu_selesai"] != "":
-              print("Anda sudah melakukan presensi hari ini")
-              return False
+   ditemukan = False
 
-            waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
-            waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
+   for baris in data:
+      if baris["username"] == username and baris["tanggal"] == tanggal:
+         ditemukan = True
 
-            jam_kerja = (waktu_akhir - waktu_mulai).total_seconds() / 3600
+         if baris["waktu_selesai"] != "":
+            print("Anda sudah melakukan presensi selesai kerja hari ini")
+            return False
 
-            baris["waktu_selesai"] = waktu_selesai
-            baris["jam_kerja"] = jam_kerja
+         waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
+         waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
+   
+         jam_kerja = (waktu_akhir - waktu_mulai).total_seconds() / 3600
+   
+         baris["waktu_selesai"] = waktu_selesai
+         baris["jam_kerja"] = round(jam_kerja, 2)
+         break
 
-            with open("data_waktu.csv", "w", newline="") as file:
-                  penulis = csv.DictWriter(file, fieldnames=["nama", "username", "tanggal", "waktu_mulai", "waktu_selesai", "jam_kerja"])
-                  penulis.writeheader()
-                  penulis.writerows(data)
-
-            print("Berhasil melakukan clock-out!")
-            print("Waktu selesai:", waktu_selesai)
-            print("Total jam kerja:", round(jam_kerja, 2), "jam")
-            return True
-
-   print("Anda belum melakukan clock-in hari ini!")
-   return False
+   if ditemukan == False:
+      print("Anda belum melakukan clock-in hari ini!")
+      return False
+      
+   with open("data_waktu.csv", "w", newline="") as file:
+      penulis = csv.DictWriter(file, fieldnames=["nama", "username", "jabatan", "tanggal", "waktu_mulai", "waktu_selesai", "jam_kerja"])
+      penulis.writeheader()
+      penulis.writerows(data)
+   
+   print("Berhasil melakukan clock-out!")
+   print("Waktu selesai:", waktu_selesai)
+   print("Total jam kerja:", round(jam_kerja, 2), "jam")
+   return True
 
 def cek_id(database):
   username = input("Masukkan user id anda: ")
