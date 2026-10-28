@@ -86,6 +86,46 @@ def simpan_data(filename, database):
       penulis.writeheader()
       penulis.writerows(database)
 
+def edit_data():
+  
+
+def hapus_data(database):
+   username = input("Masukkan username karyawan yang ingin dihapus: ")
+
+   for i in range(len(database)):
+      if database[i]["username"] == username and username != "":
+         print("Nama:", database[i]["nama"])
+         print("Jabatan:", database[i]["jabatan"])
+
+         konfirmasi = input("Yakin ingin menghapus karyawan ini? (y/n): ")
+
+         if konfirmasi == "y":
+            for j in range(i, len(database) - 1):
+               database[j] = database[j + 1]
+
+            database[len(database) - 1] = {
+               "nomor": "",
+               "nama": "",
+               "username": "",
+               "password": "",
+               "jabatan": "",
+               "gaji": ""
+            }
+
+            for j in range(len(database)):
+               if database[j]["nama"] != "":
+                  database[j]["nomor"] = str(j + 1)
+            
+            print("Data karyawan berhasil dihapus!")
+            return True
+
+         else:
+            print("Penghapusan dibatalkan!")
+            return False
+
+   print("Username tidak ditemukan!")
+   return False
+
 def cek_waktu_saat_ini():
   return datetime.now()
 
