@@ -146,8 +146,6 @@ def hapus_data():
   
 def tambahkan_data():
 
-def selesai_kerja():
-
 def hitung_gaji():
 
 def cek_gaji():
