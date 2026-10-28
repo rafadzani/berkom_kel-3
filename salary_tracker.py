@@ -16,8 +16,8 @@ def main(): #program utama
       if data_utama_user != False:
          lanjut_ke_pin = data_utama_user[0]
          indeks_user = data_utama_user[1]
-         user_id = data_utama_user[2]
-         nama_user = data_utama_user[3]
+         username = data_utama_user[2]
+         nama = data_utama_user[3]
          jabatan_user = data_utama_user[4]
 
     while lanjut_ke_absen == False:
@@ -26,14 +26,22 @@ def main(): #program utama
     if lanjut_ke_absen == True:
        print("Login berhasil!\n")
 
-    if nama_user == "Admin":
+    if nama == "Admin":
        indeks_menu = int(input("Selamat datang di menu Admin, apa yang ingin anda lakukan?\n1. Edit data karyawan\n2. Hapus data karyawan\n3. Tambahkan karyawan baru\n4. Cek gaji\nPilih menu: "))
 
     else:
-      indeks_menu = int(input(f"Selamat datang {nama_user}, apa yang ingin anda lakukan?\n1. Presensi mulai kerja\n2. Presensi selesai kerja\nPilih menu: "))
+      print(f"Selamat datang {nama}, apa yang ingin anda lakukan?\n1. Presensi mulai kerja\n2. Presensi selesai kerja")
 
-    
-      
+      while True:
+         indeks_menu = int(input("Pilih menu: "))
+         if indeks_menu == 1:
+            mulai_kerja(username, nama, jabatan_user)
+            break
+         elif indeks_menu == 2:
+            selesai_kerja(username)
+            break
+         else:
+            print("Masukkan kode menu yang benar (1/2)")
 
 #subprogram
 def ambil_data(filename):
@@ -45,8 +53,8 @@ def ambil_data(filename):
 def cek_waktu_saat_ini():
   return datetime.now()
 
-def mulai_kerja(username, nama):
-   sekarang = cek_waktu_saat_ini
+def mulai_kerja(username, nama, jabatan):
+   sekarang = cek_waktu_saat_ini()
 
    tanggal = sekarang.strftime("%Y-%m-%d")
    waktu_mulai = sekarang.strftime("%H:%M:%S")
@@ -61,7 +69,7 @@ def mulai_kerja(username, nama):
 
    with open("data_waktu.csv", "a", newline="") as file:
       penulis = csv.writer(file)
-      penulis.writerow([nama, username, tanggal, waktu_mulai, "", ""])
+      penulis.writerow([nama, username, jabatan, tanggal, waktu_mulai, "", ""])
 
    print("Berhasil melakukan clock-in!")
    print("Waktu mulai:", waktu_mulai)
@@ -123,7 +131,7 @@ def cek_password(database, indeks):
     print("Password salah!")
   print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
   return False
-
+   
 main()
 
 def edit_data():
