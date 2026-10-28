@@ -214,12 +214,9 @@ def selesai_kerja(database_waktu, username):
          if baris["waktu_selesai"] != "":
             print("Anda sudah melakukan presensi selesai kerja hari ini")
             return False
-
-         waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
-         waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
-
-         jam_kerja = (waktu_akhir - waktu_mulai).total_seconds() / 3600
-
+         
+         jam_kerja = hitung_jam_kerja (waktu_mulai, waktu_selesai)
+         
          baris["waktu_selesai"] = waktu_selesai
          baris["jam_kerja"] = round(jam_kerja, 2)
 
@@ -250,8 +247,38 @@ def cek_password(database, indeks):
   print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
   return False
 
-main()
+def hitung_jam_kerja(waktu_mulai, waktu_selesai):
+   # Menghitung jam kerja dari format "HH:MM"
+   # KAMUS LOKAL
+   # waktu_mulai, waktu_selesai : str
 
-def hitung_gaji():
+   waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
+   waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
+   selisih = (waktu_akhir - waktu_mulai).total_seconds() / 60   # detik menjadi menit
+   if menit < 0:                          # jika shift lewat tengah malam
+           menit += 24 * 60 
+   return menit / 60                   # menit menjadi jam
+
+def hitung_gaji(database, username, tarif_per_jam):
+    # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
+    # KAMUS LOKAL
+    # database : list of list, username : str, tarif_per_jam : int/float
+   for baris in database:
+      if baris[2] == "General Manager":
+         tarif_per_jam = 50000
+      elif baris [2] == "Manager":
+         tarif_per_jam = 40000
+      elif baris[2] == "Supervisor":
+         tarif_per_jam = 30000
+      elif baris[2] == "Staff":
+         tarif_per_jam = 20000
+      elif baris[2] == "Magang":
+         tarif_per_jam = 10000
+    total_jam = 0
+    for baris in database:
+        if baris[1] == username:
+            total_jam += float(baris[4])     # row[4] = jam_kerja
+
+    return total_jam * tarif_per_jam
 
 def cek_gaji():
