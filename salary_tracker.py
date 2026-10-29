@@ -287,6 +287,9 @@ def mulai_kerja(database_waktu, username, nama, jabatan):
    return False
 
 def selesai_kerja(database_waktu, username):
+   # Menjalankan fungsi presensi selesai kerja dengan mencatat waktu selesai dalam database dan menampilkan jam kerja total
+   # KAMUS LOKAL
+   # database : list of list; username : str; tarif_per_jam : int; total_gaji_lama : int; total_gaji_baru = int
    sekarang = cek_waktu_saat_ini()
 
    tanggal = sekarang.strftime("%Y-%m-%d")
@@ -328,7 +331,7 @@ def hitung_jam_kerja(waktu_mulai, waktu_selesai):
 def hitung_gaji(database_waktu, database, username):
    # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
    # KAMUS LOKAL
-   # database : list of list, username : str, tarif_per_jam : int/float, total_gaji_lama : float, total_gaji_baru = int.
+   # database : list of list; username : str; tarif_per_jam : int; total_gaji_lama : int; total_gaji_baru = int
    tarif_per_jam = 0
    total_jam = 0
    for baris in database_waktu:
