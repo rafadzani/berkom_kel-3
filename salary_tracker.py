@@ -3,7 +3,10 @@ from datetime import datetime
 #Program Salary Tracker
 #Berfungsi untuk mencatat jam masuk dan pulang kerja, menghitung lama jam kerja, serta menghitung gaji berdasarkan jabatan dan lama jam kerja
 
-def main(): #program utama
+def main(): #Program Utama
+   # Menjalankan tampilan utama Salary Tracker
+   # KAMUS LOKAL
+   # database, database_waktu : list of list; lanjut_ke_pin, lanjut_ke_absen : boolean; 
   print("==== Selamat Datang Di Program Presensi Karyawan PT Ngawi Sejahtera Makmur Sentosa ====")
   print("=======================================================================================")
   database = ambil_data("data.csv")
