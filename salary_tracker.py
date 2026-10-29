@@ -5,7 +5,7 @@ from datetime import datetime
 
 def main(): #program utama
   print("==== Selamat Datang Di Program Presensi Karyawan PT Ngawi Sejahtera Makmur Sentosa ====")
-  print("======================================================================================")
+  print("=======================================================================================")
   database = ambil_data("data.csv")
   database_waktu = ambil_data("data_waktu.csv")
   while True:
@@ -31,18 +31,26 @@ def main(): #program utama
        while True:
           indeks_menu = int(input("Selamat datang di menu Admin, apa yang ingin anda lakukan?\n1. Edit data karyawan\n2. Hapus data karyawan\n3. Tambahkan karyawan baru\n4. Cek gaji\nPilih menu: "))
           if indeks_menu == 1:
+             print("=======================================================================================")
+             print("Selamat datang di menu pengeditan data karyawan")
              edit_data(database)
              simpan_data("data.csv", database)
              break
           elif indeks_menu == 2:
+             print("=======================================================================================")
+             print("Selamat datang di menu penghapusan data karyawan")
              hapus_data(database)
              simpan_data("data.csv", database)
              breakpoint
           elif indeks_menu == 3:
+             print("=======================================================================================")
+             print("Selamat datang di menu penambahan data karyawan")
              tambah_data(database)
              simpan_data("data.csv", database)
              break
           elif indeks_menu == 4:
+             print("=======================================================================================")
+             print("Selamat datang di menu pengecekan gaji karyawan")
              cek_gaji(database) 
              break
           else:
@@ -52,6 +60,7 @@ def main(): #program utama
 
       while True:
          indeks_menu = int(input("Pilih menu: "))
+
          if indeks_menu == 1:
             if mulai_kerja(database_waktu, username, nama, jabatan_user):
                simpan_data("data_waktu.csv", database_waktu)
@@ -64,7 +73,8 @@ def main(): #program utama
             break
          else:
             print("Masukkan kode menu yang benar (1/2)")
-           
+
+    print("=======================================================================================")           
     lanjut_looping = input("Apa ada hal lain yang bisa dibantu?\n1. Ada\n2. Tidak Ada \nPilih menu: ")
     while lanjut_looping != "1" and lanjut_looping != "2":
        lanjut_looping = input("Masukkan kode yang benar!\nApa ada hal lain yang bisa dibantu?\n1. Ada\n2. Tidak Ada\nPilih menu: ")
@@ -114,6 +124,7 @@ def tambah_data(database):
          }
 
          print("Karyawan berhasil ditambahkan!")
+         return True
 
 def edit_data(database):
    username = input("Masukkan username karyawan yang ingin diedit: ")
@@ -305,15 +316,15 @@ def hitung_gaji(database_waktu, database, username):
    tarif_per_jam = 0
    for baris in database_waktu:
       if baris["jabatan"] == "General Manager":
-         tarif_per_jam = 50000
+         tarif_per_jam = 200000
       elif baris ["jabatan"] == "Manager":
-         tarif_per_jam = 40000
+         tarif_per_jam = 150000
       elif baris["jabatan"] == "Supervisor":
-         tarif_per_jam = 30000
+         tarif_per_jam = 100000
       elif baris["jabatan"] == "Staff":
-         tarif_per_jam = 20000
+         tarif_per_jam = 50000
       elif baris["jabatan"] == "Magang":
-         tarif_per_jam = 10000
+         tarif_per_jam = 25000
    total_jam = 0
    for baris in database_waktu:
         if baris["username"] == username:
