@@ -29,6 +29,16 @@ def main(): #program utama
 
     if nama == "Admin":
        indeks_menu = int(input("Selamat datang di menu Admin, apa yang ingin anda lakukan?\n1. Edit data karyawan\n2. Hapus data karyawan\n3. Tambahkan karyawan baru\n4. Cek gaji\nPilih menu: "))
+       if indeks_menu == 1:
+          change_user_id = input("Masukkan id user yang ingin diedit: ")
+       elif indeks_menu == 2:
+          delete_user = input("Masukkan id user yang ingin dihapus: ")
+       elif indeks_menu == 3:
+          new_user_id = input("Masukkan id user yang ingin ditambahkan : ")
+          new_user_name = input("Masukkan nama karyawan yang ingin ditambahkan : ")
+          new_user_jabatan = input("Masukkan jabatan karyawan yang ingin ditambahkan : ")
+          new_user_password = input("Buat password untuk akun ini: ")
+                    
 
     else:
       print(f"Selamat datang {nama}, apa yang ingin anda lakukan?\n1. Presensi mulai kerja\n2. Presensi selesai kerja")
@@ -41,7 +51,9 @@ def main(): #program utama
             break
          elif indeks_menu == 2:
             if selesai_kerja(database_waktu, username):
+               hitung_gaji(database_waktu, database, username)
                simpan_data("data_waktu.csv", database_waktu)
+               simpan_data("data.csv", database)
             break
          else:
             print("Masukkan kode menu yang benar (1/2)")
@@ -220,7 +232,7 @@ def selesai_kerja(database_waktu, username):
 
    for baris in database_waktu:
       if baris["username"] == username and baris["tanggal"] == tanggal:
-
+         waktu_mulai = baris["waktu_mulai"]
          if baris["waktu_selesai"] != "":
             print("Anda sudah melakukan presensi selesai kerja hari ini")
             return False
@@ -262,33 +274,44 @@ def hitung_jam_kerja(waktu_mulai, waktu_selesai):
    # KAMUS LOKAL
    # waktu_mulai, waktu_selesai : str
 
-   waktu_mulai = datetime.strptime(baris["waktu_mulai"], "%H:%M:%S")
+   waktu_mulai = datetime.strptime(waktu_mulai, "%H:%M:%S")
    waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
-   selisih = (waktu_akhir - waktu_mulai).total_seconds() / 60   # detik menjadi menit
+   menit = (waktu_akhir - waktu_mulai).total_seconds() / 60   # detik menjadi menit
    if menit < 0:                          # jika shift lewat tengah malam
            menit += 24 * 60 
    return menit / 60                   # menit menjadi jam
 
-def hitung_gaji(database, username, tarif_per_jam):
-    # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
-    # KAMUS LOKAL
-    # database : list of list, username : str, tarif_per_jam : int/float
-   for baris in database:
-      if baris[2] == "General Manager":
+def hitung_gaji(database_waktu, database, username):
+   # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
+   # KAMUS LOKAL
+   # database : list of list, username : str, tarif_per_jam : int/float
+   tarif_per_jam = 0
+   for baris in database_waktu:
+      if baris["jabatan"] == "General Manager":
          tarif_per_jam = 50000
-      elif baris [2] == "Manager":
+      elif baris ["jabatan"] == "Manager":
          tarif_per_jam = 40000
-      elif baris[2] == "Supervisor":
+      elif baris["jabatan"] == "Supervisor":
          tarif_per_jam = 30000
-      elif baris[2] == "Staff":
+      elif baris["jabatan"] == "Staff":
          tarif_per_jam = 20000
-      elif baris[2] == "Magang":
+      elif baris["jabatan"] == "Magang":
          tarif_per_jam = 10000
-    total_jam = 0
-    for baris in database:
-        if baris[1] == username:
-            total_jam += float(baris[4])     # row[4] = jam_kerja
+   total_jam = 0
+   for baris in database_waktu:
+        if baris["username"] == username:
+            total_jam += float(baris["jam_kerja"])     # row[6] = jam_kerja
+   gaji = total_jam * tarif_per_jam
 
-    return total_jam * tarif_per_jam
+   for baris in database:
+      if baris["username"] == username:
+         baris["gaji"] = str(int(baris["gaji"])+ gaji)
+main()
 
-def cek_gaji():
+def edit_data():
+  return 0
+
+def tambah_data():
+  return 0
+def hapus_data():
+  return 0
