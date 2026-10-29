@@ -28,18 +28,25 @@ def main(): #program utama
        print("Login berhasil!\n")
 
     if nama == "Admin":
-       indeks_menu = int(input("Selamat datang di menu Admin, apa yang ingin anda lakukan?\n1. Edit data karyawan\n2. Hapus data karyawan\n3. Tambahkan karyawan baru\n4. Cek gaji\nPilih menu: "))
-       if indeks_menu == 1:
-          change_user_id = input("Masukkan id user yang ingin diedit: ")
-       elif indeks_menu == 2:
-          delete_user = input("Masukkan id user yang ingin dihapus: ")
-       elif indeks_menu == 3:
-          new_user_id = input("Masukkan id user yang ingin ditambahkan : ")
-          new_user_name = input("Masukkan nama karyawan yang ingin ditambahkan : ")
-          new_user_jabatan = input("Masukkan jabatan karyawan yang ingin ditambahkan : ")
-          new_user_password = input("Buat password untuk akun ini: ")
-                    
-
+       while True:
+          indeks_menu = int(input("Selamat datang di menu Admin, apa yang ingin anda lakukan?\n1. Edit data karyawan\n2. Hapus data karyawan\n3. Tambahkan karyawan baru\n4. Cek gaji\nPilih menu: "))
+          if indeks_menu == 1:
+             edit_data(database)
+             simpan_data("data.csv", database)
+             break
+          elif indeks_menu == 2:
+             hapus_data(database)
+             simpan_data("data.csv", database)
+             breakpoint
+          elif indeks_menu == 3:
+             tambah_data(database)
+             simpan_data("data.csv", database)
+             break
+          elif indeks_menu == 4:
+             cek_gaji(database) 
+             break
+          else:
+             print("Masukkan kode menu yang benar (1/2/3/4)")     
     else:
       print(f"Selamat datang {nama}, apa yang ingin anda lakukan?\n1. Presensi mulai kerja\n2. Presensi selesai kerja")
 
@@ -123,7 +130,7 @@ def edit_data(database):
          pilihan = input("Pilih data yang ingin diedit: ")
 
          if pilihan == "1":
-            database[i["nama"]] = input("Masukkan nama baru: ")
+            database[i]["nama"] = input("Masukkan nama baru: ")
 
          elif pilihan == "2":
             username_baru = input("Masukkan username baru: ")
@@ -188,6 +195,16 @@ def hapus_data(database):
             print("Penghapusan dibatalkan!")
             return False
 
+   print("Username tidak ditemukan!")
+   return False
+
+def cek_gaji(database):
+   username = input("Masukkan username karyawan yang gajinya ingin di cek: ")
+
+   for i in range(len(database)):
+      if database[i]["username"] == username and username != "":
+         print(database[i]["nama"], "memiliki total gaji senilai: ", database[i]["gaji"])
+         return True
    print("Username tidak ditemukan!")
    return False
 
@@ -307,11 +324,3 @@ def hitung_gaji(database_waktu, database, username):
       if baris["username"] == username:
          baris["gaji"] = str(int(baris["gaji"])+ gaji)
 main()
-
-def edit_data():
-  return 0
-
-def tambah_data():
-  return 0
-def hapus_data():
-  return 0
