@@ -1,27 +1,26 @@
 nomor,nama,username,password,jabatan,gaji
-1,Robert Downey Jr.,19667001,dummy#01,General Manager,10000000
-2,Patrick,19667002,dummy#02,General Manager,9300000
-3,Daniel Caesar,19667003,dummy#03,Manager,7900000
-4,Sandra Bullock,19667004,dummy#04,Manager,8100000
-5,Zendaya,19667005,dummy#05,Manager,7960000
-6,Tom Holland,19667006,dummy#06,Manager,7800000
-7,Anton,19667007,dummy#07,Supervisor,6760000
-8,Reza Auditore,19667008,dummy#08,Supervisor,6810000
-9,Rusdi,19667009,dummy#09,Supervisor,6800000
-10,Fuad,19667048,dummy#10,Supervisor,6690000
-11,Mr. Ironi,19667067,dummy#11,Supervisor,6730000
-12,Spongebob,19667069,dummy#12,Staff,6000000
-13,Paris Geller,19667001,dummy#13,Staff,5500000
-14,Cristiano Rolando,19667077,dummy#77,Staff,5800000
-15,Lionel Messi,19667010,goat#01,Staff,5650000
-16,Erling Haaland,19667009,dummy#99,Staff,5760000
-17,Valentino Rossi,19267046,dummy#46,Staff,5530000
-18,Elon Musk,19667011,dummy#14,Staff,5790000
-19,Jimmy Neutron,19667012,dummy#15,Magang,2000000
-20,Donald Trump,19667000,dummy#00,Magang,2000000
+1,Robert Downey Jr.,19667001,dummy#01,General Manager,1468000
+2,Patrick,19667002,dummy#02,General Manager,1468000
+3,Daniel Caesar,19667003,dummy#03,Manager,1101000
+4,Sandra Bullock,19667004,dummy#04,Manager,1101000
+5,Zendaya,19667005,dummy#05,Manager,1108500
+6,Tom Holland,19667006,dummy#06,Manager,1108500
+7,Cristiano Rolando,19667007,dummy#07,Supervisor,739000
+8,Reza Auditore,19667008,dummy#08,Supervisor,743000
+9,Rusdi,19667009,dummy#09,Supervisor,746000
+10,Lionel Messi,19667010,dummy#10,Supervisor,740000
+11,Mr. Ironi,19667011,dummy#11,Supervisor,750000
+12,Spongebob,19667012,dummy#12,Staff,375000
+13,Paris Geller,19667013,dummy#13,Staff,374000
+14,Anton,19667014,dummy#14,Staff,373500
+15,Fuad,19667015,dummy#15,Staff,372500
+16,Erling Haaland,19667016,dummy#16,Staff,372000
+17,Valentino Rossi,19667017,dummy#17,Staff,371000
+18,Elon Musk,19667018,dummy#18,Staff,370500
+19,Jimmy Neutron,19667019,dummy#19,Magang,184750
+20,Donald Trump,19667020,dummy#20,Magang,184250
 21,Admin,admin,admin#123,Admin,0
-,,,,,
-,,,,,
+22,Karyawan baru,19667085,newuser123,Magang,361250
 ,,,,,
 ,,,,,
 ,,,,,
