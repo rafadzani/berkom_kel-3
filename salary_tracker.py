@@ -6,7 +6,7 @@ from datetime import datetime
 def main(): #Program Utama
    # Menjalankan tampilan utama Salary Tracker
    # KAMUS LOKAL
-   # database, database_waktu : list of list; lanjut_ke_pin, lanjut_ke_absen : boolean; 
+   # database, database_waktu : array; lanjut_ke_pin, lanjut_ke_absen, data_utama_user : bool; indeks_user, indeks_menu, lanjut_looping : int, username, nama, jabatan_user : str
   print("==== Selamat Datang Di Program Presensi Karyawan PT Ngawi Sejahtera Makmur Sentosa ====")
   print("=======================================================================================")
   database = ambil_data("data.csv")
@@ -88,19 +88,28 @@ def main(): #Program Utama
        print("Terima kasih telah menggunakan layanan ini :D")
        break
 
-#subprogram
+#Subprogram
 def ambil_data(filename):
+   # Membaca file csv dan mengambil datanya
+   # KAMUS LOKAL
+   # filename : str; database : array
   with open(filename, mode="r", encoding="utf-8-sig") as file:
     pembaca = csv.DictReader(file)
     return [row for row in pembaca]
 
 def simpan_data(filename, database):
+   # Menyimpan perubahan yang dilakukan terhadap database
+   # KAMUS LOKAL
+   # filename : str; database : array
    with open(filename, "w", newline="") as file:
       penulis = csv.DictWriter(file, fieldnames=database[0].keys())
       penulis.writeheader()
       penulis.writerows(database)
 
 def cek_user(database):
+   # Meminta input username lalu mencocokkannya dengan database
+   # KAMUS LOKAL
+   # database : array; username, nama_user, jabatan_user : str
   username = input("Masukkan username anda: ")
   for i in range(len(database)):
     if database[i]["username"] == username and username != "":
@@ -108,18 +117,24 @@ def cek_user(database):
       jabatan_user = database[i]["jabatan"]
       return [True, i, username, nama_user, jabatan_user]
   print("Username tidak terdaftar!")
-  return False
+  return False                  # Menjadi false karena username yang diinput tidak ada dalam data
 
 def cek_password(database, indeks):
-  for kesempatan in range(3):
+   # Meminta input password lalu mencocokkannya dengan database
+   # KAMUS LOKAL
+   # database : array; password : str; indeks : int
+  for kesempatan in range(3):   # User diberi 3 kali percobaan/kesempatan
     password = input("Masukkan password: ")
     if password == database[indeks]["password"]:
       return True
     print("Password salah!")
   print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
-  return False
+  return False                  # Menjadi false karena password yang diinput sebanyak 3 kali tidak sesuai dengan username yang ada dalam data
 
 def tambah_data(database):
+   # Menambah data karyawan baru dalam database
+   # KAMUS LOKAL
+   # database : array; username, nama, password, jabatan : str; nomor, gaji : int
    for i in range(len(database)):
       if database[i]["nomor"] == "":
          nomor = i + 1
@@ -130,7 +145,7 @@ def tambah_data(database):
          for data in database:
             if data["username"] == username:
                print("Username sudah terdaftar!")
-               return False
+               return False                     # Jika sudah ada username yang sama, otomatis akan ditolak
 
          password = input("Masukkan password: ")
          jabatan = input("Masukkan jabatan: ")
@@ -149,6 +164,9 @@ def tambah_data(database):
          return True
 
 def edit_data(database):
+   # Mengedit/mengubah profil data karyawan yang sudah ada di dalam database
+   # KAMUS LOKAL
+   # database : array; username, nama, password, jabatan : str; pilihan, gaji : int
    username = input("Masukkan username karyawan yang ingin diedit: ")
 
    for i in range(len(database)):
@@ -163,29 +181,29 @@ def edit_data(database):
          pilihan = input("Pilih data yang ingin diedit: ")
 
          if pilihan == "1":
-            database[i]["nama"] = input("Masukkan nama baru: ")
+            database[i]["nama"] = input("Masukkan nama baru: ")      # Pilihan 1 buat edit nama
 
          elif pilihan == "2":
-            username_baru = input("Masukkan username baru: ")
+            username_baru = input("Masukkan username baru: ")         # Pilihan 2 buat edit username
 
             for j in range(len(database)):
                if database[j]["username"] == username_baru:
-                  print("Username sudah terdaftar!")
-                  return False
+                  print("Username sudah terdaftar!")            # Mengecek apakah username yang ingin diganti sudah ada yang sama dalam database
+                  return False         # Menjadi false karena username yang sama ternyata sudah ada dalam database
 
-            database[i]["username"] = username_baru
+            database[i]["username"] = username_baru      # Berhasil diubah jika tidak ada username yang sama
 
          elif pilihan == "3":
-            database[i]["password"] = input("Masukkan password baru: ")
+            database[i]["password"] = input("Masukkan password baru: ")   # Pilihan 3 buat edit password
 
          elif pilihan == "4":
-            database[i]["jabatan"] = input("Masukkan jabatan baru: ")
+            database[i]["jabatan"] = input("Masukkan jabatan baru: ")      # Pilihan 4 buat edit jabatan
 
          elif pilihan == "5":
-            database[i]["gaji"] = input("Masukkan gaji baru: ")
+            database[i]["gaji"] = input("Masukkan gaji baru: ")            # Pilihan 5 buat edit gaji
          
          else:
-            print("Pilihan tidak valid!")
+            print("Pilihan tidak valid!")                  # Selain 5 itu, tidak ada pilihan lain --> False
             return False
 
          print("Data karyawan berhasil diperbarui!")
@@ -195,6 +213,9 @@ def edit_data(database):
    return False
 
 def hapus_data(database):
+   # Meminta input username lalu mencocokkannya dengan database
+   # KAMUS LOKAL
+   # database : array; username : str; konfirmasi : char
    username = input("Masukkan username karyawan yang ingin dihapus: ")
 
    for i in range(len(database)):
@@ -208,7 +229,7 @@ def hapus_data(database):
             for j in range(i, len(database) - 1):
                database[j] = database[j + 1]
 
-            database[len(database) - 1] = {
+            database[len(database) - 1] = {      # Semua data menjadi kosong
                "nomor": "",
                "nama": "",
                "username": "",
@@ -232,6 +253,9 @@ def hapus_data(database):
    return False
 
 def cek_gaji(database):
+   # Meminta input username lalu mengambil data total gaji karyawan tersebut
+   # KAMUS LOKAL
+   # database : array; username : str, gaji : int
    username = input("Masukkan username karyawan yang gajinya ingin di cek: ")
 
    for i in range(len(database)):
@@ -243,6 +267,9 @@ def cek_gaji(database):
    return False
 
 def cetak_rupiah(gaji):
+   # ??? (masi ditanyain tal ke developer yh)
+   # KAMUS LOKAL
+   # database : array; username, nama, password, jabatan : str; nomor, gaji : int
    nominal = str(gaji)
    panjang = len(nominal)
 
@@ -257,16 +284,21 @@ def cetak_rupiah(gaji):
          print(nominal[i], end="")
 
 def cek_waktu_saat_ini():
+   # Mengambil tanggal dan jam saat ini dari sistem komputer
+   # KAMUS LOKAL : (tidak ada)
   return datetime.now()
 
 def mulai_kerja(database_waktu, username, nama, jabatan):
+   # Menjalankan fungsi presensi mulai kerja dengan mencatat waktu mulai ke dalam database_waktu
+   # KAMUS LOKAL
+   # database_waktu : array; username, nama, jabatan, tanggal, waktu_mulai : str;
    sekarang = cek_waktu_saat_ini()
 
    tanggal = sekarang.strftime("%Y-%m-%d")
    waktu_mulai = sekarang.strftime("%H:%M:%S")
 
    for baris in database_waktu:
-      if baris["username"] == username and baris["tanggal"] == tanggal:
+      if baris["username"] == username and baris["tanggal"] == tanggal:      # Mengecek apakah user sudah presensi di hari itu
          print("Anda sudah melakukan presensi hari ini")
          return False
 
@@ -292,7 +324,7 @@ def mulai_kerja(database_waktu, username, nama, jabatan):
 def selesai_kerja(database_waktu, username):
    # Menjalankan fungsi presensi selesai kerja dengan mencatat waktu selesai dalam database dan menampilkan jam kerja total
    # KAMUS LOKAL
-   # database : list of list; username : str; tarif_per_jam : int; total_gaji_lama : int; total_gaji_baru = int
+   # database_waktu : array; username, tanggal, waktu_mulai, waktu_selesai : str; jam_kerja : int
    sekarang = cek_waktu_saat_ini()
 
    tanggal = sekarang.strftime("%Y-%m-%d")
@@ -318,12 +350,10 @@ def selesai_kerja(database_waktu, username):
    print("Anda belum melakukan clock-in hari ini!")
    return False
 
-
 def hitung_jam_kerja(waktu_mulai, waktu_selesai):
    # Menghitung jam kerja dari format "HH:MM"
    # KAMUS LOKAL
    # waktu_mulai, waktu_selesai : str
-
    waktu_mulai = datetime.strptime(waktu_mulai, "%H:%M:%S")
    waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
    menit = (waktu_akhir - waktu_mulai).total_seconds() / 60   # detik menjadi menit
@@ -334,7 +364,7 @@ def hitung_jam_kerja(waktu_mulai, waktu_selesai):
 def hitung_gaji(database_waktu, database, username):
    # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
    # KAMUS LOKAL
-   # database : list of list; username : str; tarif_per_jam : int; total_gaji_lama : int; total_gaji_baru = int
+   # database, database_waktu : array; username : str; tarif_per_jam, total_gaji_lama, total_gaji_baru, gaji_sebelumnya : int
    tarif_per_jam = 0
    total_jam = 0
    for baris in database_waktu:
