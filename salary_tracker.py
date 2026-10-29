@@ -97,6 +97,25 @@ def simpan_data(filename, database):
       penulis.writeheader()
       penulis.writerows(database)
 
+def cek_user(database):
+  username = input("Masukkan username anda: ")
+  for i in range(len(database)):
+    if database[i]["username"] == username and username != "":
+      nama_user = database[i]["nama"]
+      jabatan_user = database[i]["jabatan"]
+      return [True, i, username, nama_user, jabatan_user]
+  print("Username tidak terdaftar!")
+  return False
+
+def cek_password(database, indeks):
+  for kesempatan in range(3):
+    password = input("Masukkan password: ")
+    if password == database[indeks]["password"]:
+      return True
+    print("Password salah!")
+  print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
+  return False
+
 def tambah_data(database):
    for i in range(len(database)):
       if database[i]["nomor"] == "":
@@ -214,10 +233,25 @@ def cek_gaji(database):
 
    for i in range(len(database)):
       if database[i]["username"] == username and username != "":
-         print(database[i]["nama"], "memiliki total gaji senilai: ", database[i]["gaji"])
+         print(database[i]["nama"], "memiliki total gaji senilai: ", end="")
+         cetak_rupiah(int(database[i]["gaji"]))
          return True
    print("Username tidak ditemukan!")
    return False
+
+def cetak_rupiah(gaji):
+   nominal = str(gaji)
+   panjang = len(nominal)
+
+   for i in range(0, panjang):
+      if i == 0:
+         print(f"Rp{nominal[i]}", end="")
+      elif (panjang - i) % 3 == 0:
+         print(f".{nominal[i]}", end="")
+      elif i == panjang-1:
+         print(nominal[i])
+      else:
+         print(nominal[i], end="")
 
 def cek_waktu_saat_ini():
   return datetime.now()
@@ -278,24 +312,6 @@ def selesai_kerja(database_waktu, username):
    print("Anda belum melakukan clock-in hari ini!")
    return False
 
-def cek_user(database):
-  username = input("Masukkan username anda: ")
-  for i in range(len(database)):
-    if database[i]["username"] == username and username != "":
-      nama_user = database[i]["nama"]
-      jabatan_user = database[i]["jabatan"]
-      return [True, i, username, nama_user, jabatan_user]
-  print("Username tidak terdaftar!")
-  return False
-
-def cek_password(database, indeks):
-  for kesempatan in range(3):
-    password = input("Masukkan password: ")
-    if password == database[indeks]["password"]:
-      return True
-    print("Password salah!")
-  print("Anda sudah salah 3 kali! silahkan login ulang\nApabila Lupa, Hubungi admin untuk mengganti password")
-  return False
 
 def hitung_jam_kerja(waktu_mulai, waktu_selesai):
    # Menghitung jam kerja dari format "HH:MM"
@@ -312,26 +328,27 @@ def hitung_jam_kerja(waktu_mulai, waktu_selesai):
 def hitung_gaji(database_waktu, database, username):
    # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
    # KAMUS LOKAL
-   # database : list of list, username : str, tarif_per_jam : int/float
+   # database : list of list, username : str, tarif_per_jam : int/float, total_gaji_lama : float, total_gaji_baru = int.
    tarif_per_jam = 0
-   for baris in database_waktu:
-      if baris["jabatan"] == "General Manager":
-         tarif_per_jam = 200000
-      elif baris ["jabatan"] == "Manager":
-         tarif_per_jam = 150000
-      elif baris["jabatan"] == "Supervisor":
-         tarif_per_jam = 100000
-      elif baris["jabatan"] == "Staff":
-         tarif_per_jam = 50000
-      elif baris["jabatan"] == "Magang":
-         tarif_per_jam = 25000
    total_jam = 0
    for baris in database_waktu:
-        if baris["username"] == username:
-            total_jam += float(baris["jam_kerja"])     # row[6] = jam_kerja
-   gaji = total_jam * tarif_per_jam
-
+      if baris["username"] == username:
+            total_jam += float(baris["jam_kerja"])
+            if baris["jabatan"] == "General Manager":
+               tarif_per_jam = 200000
+            elif baris ["jabatan"] == "Manager":
+               tarif_per_jam = 150000
+            elif baris["jabatan"] == "Supervisor":
+               tarif_per_jam = 100000
+            elif baris["jabatan"] == "Staff":
+               tarif_per_jam = 50000
+            elif baris["jabatan"] == "Magang":
+               tarif_per_jam = 25000
+   
+   total_gaji_baru = total_jam * tarif_per_jam
    for baris in database:
       if baris["username"] == username:
-         baris["gaji"] = str(int(baris["gaji"])+ gaji)
+         gaji_sebelumnya = int(baris["gaji"])
+         baris["gaji"] = str(int(total_gaji_baru + gaji_sebelumnya))
+
 main()
