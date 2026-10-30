@@ -134,7 +134,7 @@ def cek_password(database, indeks):
 def tambah_data(database):
    # Menambah data karyawan baru dalam database
    # KAMUS LOKAL
-   # database : array; username, nama, password, jabatan : str; nomor, gaji : int
+   # database : array; username, nama, password, jabatan, gaji : str
    for i in range(len(database)):
       if database[i]["nomor"] == "":
          nomor = i + 1
@@ -166,7 +166,7 @@ def tambah_data(database):
 def edit_data(database):
    # Mengedit/mengubah profil data karyawan yang sudah ada di dalam database
    # KAMUS LOKAL
-   # database : array; username, nama, password, jabatan : str; pilihan, gaji : int
+   # database : array; username, nama, password, jabatan, gaji : str; pilihan : int
    username = input("Masukkan username karyawan yang ingin diedit: ")
 
    for i in range(len(database)):
@@ -255,7 +255,7 @@ def hapus_data(database):
 def cek_gaji(database):
    # Meminta input username lalu mengambil data total gaji karyawan tersebut
    # KAMUS LOKAL
-   # database : array; username : str, gaji : int
+   # database : array; username, gaji : str
    username = input("Masukkan username karyawan yang gajinya ingin di cek: ")
 
    for i in range(len(database)):
@@ -269,7 +269,7 @@ def cek_gaji(database):
 def cetak_rupiah(gaji):
    # ??? (masi ditanyain tal ke developer yh)
    # KAMUS LOKAL
-   # database : array; username, nama, password, jabatan : str; nomor, gaji : int
+   # database : array; nominal, gaji : str, panjang: int
    nominal = str(gaji)
    panjang = len(nominal)
 
