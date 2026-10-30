@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
-#Program Salary Tracker
-#Berfungsi untuk mencatat jam masuk dan pulang kerja, menghitung lama jam kerja, serta menghitung gaji berdasarkan jabatan dan lama jam kerja
+# Program Salary Tracker
+# Berfungsi untuk mencatat jam masuk dan pulang kerja, menghitung lama jam kerja, serta menghitung gaji berdasarkan jabatan dan lama jam kerja
 
 def main(): #Program Utama
     # Menjalankan tampilan utama Salary Tracker
@@ -10,10 +10,12 @@ def main(): #Program Utama
     print("==== Selamat Datang Di Program Presensi Karyawan PT Ngawi Sejahtera Makmur Sentosa ====")
     print("=======================================================================================")
 
+    # Membaca data karyawan dan riwayat presensi saat program dimulai
     database = ambil_data("data.csv")
     database_waktu = ambil_data("data_waktu.csv")
 
     while True:
+        # Mengulang proses login sampai username dan password benar
         while True:
             data_utama_user = cek_user(database)
 
@@ -27,6 +29,7 @@ def main(): #Program Utama
                     print("Login berhasil!\n")
                     break
 
+        # Membuka menu admin
         if nama == "Admin":
             while True:
                 print("=======================================================================================")
@@ -41,23 +44,24 @@ def main(): #Program Utama
                 if indeks_menu == "1":
                     print("=======================================================================================")
                     print("Selamat datang di menu pengeditan data karyawan")
-                    edit_data(database, database_waktu)
-                    simpan_data("data.csv", database)
-                    simpan_data("data_waktu.csv", database_waktu)
+                    # Perubahan username juga disimpan ke riwayat presensi
+                    if edit_data(database, database_waktu):
+                       simpan_data("data.csv", database)
+                       simpan_data("data_waktu.csv", database_waktu)
                     break
 
                 elif indeks_menu == "2":
                     print("=======================================================================================")
                     print("Selamat datang di menu penghapusan data karyawan")
-                    hapus_data(database)
-                    simpan_data("data.csv", database)
+                    if hapus_data(database):
+                       simpan_data("data.csv", database)
                     break
 
                 elif indeks_menu == "3":
                     print("=======================================================================================")
                     print("Selamat datang di menu penambahan data karyawan")
-                    tambah_data(database)
-                    simpan_data("data.csv", database)
+                    if tambah_data(database):
+                       simpan_data("data.csv", database)
                     break
 
                 elif indeks_menu == "4":
@@ -68,7 +72,8 @@ def main(): #Program Utama
 
                 else:
                     print("Masukkan kode menu yang benar (1/2/3/4)")
-
+        
+        # Membuka menu karyawan
         else:
             print("=======================================================================================")
             print(f"Selamat datang {nama}, apa yang ingin anda lakukan?")
@@ -84,6 +89,7 @@ def main(): #Program Utama
                     break
 
                 elif indeks_menu == "2":
+                    # Clock-out mengembalikan data presensi yang baru diselesaikan
                     presensi = selesai_kerja(database_waktu, username)
 
                     if presensi != False:
@@ -96,6 +102,7 @@ def main(): #Program Utama
                     print("Masukkan kode menu yang benar (1/2)")
 
         print("=======================================================================================")
+        # Pilihan antara kembali ke login atau mengakhiri program
         lanjut_looping = input("Apa ada hal lain yang bisa dibantu?\n1. Ada\n2. Tidak Ada\nPilih menu: ")
 
         while lanjut_looping != "1" and lanjut_looping != "2":
@@ -120,6 +127,7 @@ def simpan_data(filename, database):
    # Menyimpan perubahan yang dilakukan terhadap database
    # KAMUS LOKAL
    # filename : str; database : list of dict; penulis : DictWriter
+   # Mencegah akses database[0] saat daftar kosong
    if len(database) == 0:
       print("Database kosong, tidak ada data yang disimpan!")
       return False
@@ -161,6 +169,7 @@ def tambah_data(database):
    # KAMUS LOKAL
    # database : list of dict; nama, username, password, jabatan, gaji, pilihan : str; i, nomor : int; sudah_ada : bool
    for i in range(len(database)):
+      # Menggunakan slot kosong yang tersedia untuk penambahan karyawan baru
       if database[i]["nomor"] == "":
          nomor = i + 1
 
@@ -325,6 +334,7 @@ def hapus_data(database):
          konfirmasi = input("Yakin ingin menghapus karyawan ini? (y/n): ")
 
          if konfirmasi == "y":
+            # Menggeser data setelah karyawan yang dihapus ke atas
             for j in range(i, len(database) - 1):
                database[j] = database[j + 1]
 
@@ -401,6 +411,12 @@ def mulai_kerja(database_waktu, username, nama, jabatan):
          print("Anda sudah melakukan presensi hari ini")
          return False
 
+   for baris in database_waktu:
+      if baris["username"] == username and baris["waktu_mulai"] != "" and baris["waktu_selesai"] == "":
+         print("Anda masih memiliki presensi yang belum diselesaikan!")
+         return False
+
+   # Cari slot kosong untuk mencatat presensi baru
    for i in range(len(database_waktu)):
       if database_waktu[i]["username"] == "":
          database_waktu[i] = {
@@ -433,7 +449,8 @@ def selesai_kerja(database_waktu, username):
          jam_kerja = hitung_jam_kerja (waktu_mulai, waktu_selesai)
          
          baris["waktu_selesai"] = waktu_selesai
-         baris["jam_kerja"] = round(jam_kerja, 2)
+         # Simpan enam desimal agar perhitungan gaji lebih teliti
+         baris["jam_kerja"] = round(jam_kerja, 6)
 
          print("Berhasil melakukan clock-out!")
          print("Waktu selesai:", waktu_selesai)
@@ -453,24 +470,18 @@ def hitung_jam_kerja(waktu_mulai, waktu_selesai):
    # Menghitung jam kerja dari format "HH:MM:SS"
    # KAMUS LOKAL
    # waktu_mulai, waktu_selesai : str (parameter); waktu_mulai, waktu_akhir : datetime (setelah konversi); menit : float
-   # Menghitung jam kerja dari format "HH:MM"
-   # KAMUS LOKAL
-   # waktu_mulai, waktu_selesai : str
 
    waktu_mulai = datetime.strptime(waktu_mulai, "%H:%M:%S")
    waktu_akhir = datetime.strptime(waktu_selesai, "%H:%M:%S")
-   menit = (waktu_akhir - waktu_mulai).total_seconds() / 60   # Mengubah selisih waktu dari detik menjadi menit   # detik menjadi menit
-   if menit < 0:   # Jika shift melewati tengah malam                          # jika shift lewat tengah malam
+   menit = (waktu_akhir - waktu_mulai).total_seconds() / 60   # Mengubah selisih waktu dari detik menjadi menit
+   if menit < 0:   # Jika shift melewati tengah malam
            menit += 24 * 60 
-   return menit / 60   # Mengubah menit menjadi jam                   # menit menjadi jam
+   return menit / 60   # Mengubah menit menjadi jam
 
 def hitung_gaji(presensi, database, username):
    # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
    # KAMUS LOKAL
    # presensi : dict; database : list of dict; username, jabatan : str; tarif_per_jam, gaji_sebelumnya : int; total_jam, total_gaji_baru : float
-   # Menentukan gaji berdasarkan jabatan dan mengalikan total jam kerja dengan tarif per jam
-   # KAMUS LOKAL
-   # database : list of list, username : str, tarif_per_jam : int/float, total_gaji_lama : float, total_gaji_baru = int.
    tarif_per_jam = 0
    jabatan = presensi["jabatan"]
    
@@ -485,16 +496,19 @@ def hitung_gaji(presensi, database, username):
    elif jabatan == "Magang":
       tarif_per_jam = 25000
 
+   # Menolak jabatan yang tidak ada dalam list
    if tarif_per_jam == 0:
       print("Jabatan tidak valid!")
       return False
 
+   # Menghitung tambahan gaji hanya dari presensi yang baru selesai
    total_jam = float(presensi["jam_kerja"])
    total_gaji_baru = total_jam * tarif_per_jam
 
    for baris in database:
       if baris["username"] == username:
          gaji_sebelumnya = int(baris["gaji"])
+         # Akumulasikan tambahan gaji ke saldo gaji yang sudah tersimpan
          baris["gaji"] = str(int(total_gaji_baru + gaji_sebelumnya))
          print("Gaji berhasil ditambahkan!")
          return True
